@@ -20,26 +20,33 @@ const { dinosaurs, humans, movies } = require('./datasets/dinosaurs');
 
 // DATASET: kitties from ./datasets/kitties
 const kittyPrompts = {
-  orangePetNames() {
+  orangePetNames(animals) {
     // Return an array of just the names of kitties who are orange e.g.
         // ['Tiger', 'Snickers']
 
-        /* CODE GOES HERE */
+        let orangeAnimals = [] 
+        animals.forEach((animal) => {
+          if (animal.color === 'orange') {
+            orangeAnimals.push(animal.name);
+          }
+        });
+        return orangeAnimals
 
     // Annotation:
-    // Write your annotation here as a comment
+    // We are looking through an array of objects, so we need to first check one of the keys of the object to then return a different key. Ideally .filter would be useful because of its ability to find only the elements you want, however because we're working with an object within the array, and we want just a part of the object, not the entire thing, I used forEach instead.
+    // .forEach iterates over every element in the array and then you can search
   },
 
-  sortByAge() {
+  sortByAge(animals) {
     // Sort the kitties by their age
 
-    /* CODE GOES HERE */
+    return animals.sort((a, b) => b.age - a.age)
 
     // Annotation:
     // Write your annotation here as a comment
   },
 
-  growUp() {
+  growUp(animals) {
     // Return an array of kitties who have all grown up by 2 years e.g.
     // [{
     //   name: 'Felicia',
@@ -53,7 +60,14 @@ const kittyPrompts = {
     // },
     // ...etc]
 
-    /* CODE GOES HERE */
+    let agedAnimals = animals.map((animal) => {
+      return {
+        name: animal.name,
+        age: (animal.age += 2),
+        color: animal.color}
+      });
+    return agedAnimals.sort((a, b) => b.age - a.age)
+
   }
 };
 
@@ -474,8 +488,11 @@ const breweryPrompts = {
   getBeerCount() {
     // Return the total beer count of all beers for every brewery e.g.
     // 40
-
-    /* CODE GOES HERE */
+    totalBeers = 0;
+    breweries.forEach((brewery) =>{
+      totalBeers += brewery.beers.length;
+    })
+    return totalBeers
 
     // Annotation:
     // Write your annotation here as a comment
@@ -489,9 +506,12 @@ const breweryPrompts = {
     //  { name: 'Ratio Beerworks', beerCount: 5},
     // ...etc.
     // ]
-
-    /* CODE GOES HERE */
-
+    breweryBeerCount = []
+    breweries.forEach((brewery) => {
+      let brew = {"name": brewery.name, "beerCount": brewery.beers.length};
+      breweryBeerCount.push(brew);
+    })
+    return breweryBeerCount;
     // Annotation:
     // Write your annotation here as a comment
   },
@@ -501,8 +521,8 @@ const breweryPrompts = {
     // brewery has e.g.
     // given 'Ratio Beerworks', return 5
 
-
-    /* CODE GOES HERE */
+    let found = breweries.filter((brewery) => brewery.name === breweryName);
+    return (found[0].beers.length)
 
     // Annotation:
     // Write your annotation here as a comment
@@ -513,7 +533,13 @@ const breweryPrompts = {
     // e.g.
     // { name: 'Barrel Aged Nature\'s Sweater', type: 'Barley Wine', abv: 10.9, ibu: 40 }
 
-    /* CODE GOES HERE */
+    allBeers = []
+    breweries.forEach((brewery) =>{
+      allBeers.push(brewery.beers);
+    })
+    allBeers = allBeers.flat()
+    let sortedBeers = allBeers.sort((a, b) => b.abv - a.abv)
+    return sortedBeers[0]
 
     // Annotation:
     // Write your annotation here as a comment
